@@ -1,4 +1,13 @@
-# CheMeleon Toxicity Prediction
+---
+title: "CheMeleon Hepatotoxicity Prediction via Pretraining"
+author: Jackson Burns
+date: 28 July 2025
+geometry: margin=1in
+colorlinks: true
+note: |
+ This document can be compiled to other formats (pdf, word, etc.) using pandoc:
+   pandoc -s README.md -o chemeleon_hepatotoxicity.pdf
+---
 
 This document details some (brief) experiments with finetuning the [`CheMeleon`](https://doi.org/10.48550/arXiv.2506.15792) foundation model for the prediction of hepatotoxicity.
 Specifically, I'm comparing training Chemprop directly and Chemprop with CheMeleon, both of which using either **direct** training on [DILIrank](https://doi.org/10.1016/j.drudis.2016.02.015) or **pretraining** on [MitoTox](https://doi.org/10.1021/acs.chemrestox.3c00086) and then **finetuning** on DILIrank.
@@ -13,9 +22,9 @@ The specifics depend a lot on how you split your data, train your model, etc. - 
 All models in this study are trained using 70% of the data for training and 10% for validation.
 The remaining 20% are withheld for testing, and it's the same 20% for all models to fairly gauge the impact of different training strategies.
 
-## Results
+# Results
 
-# Binary
+## Binary
 
 Reproduce: `. run_binary.sh`
 
@@ -37,7 +46,7 @@ For CheMeleon, though, the performance actually _decreases_ by ~1.5% when finetu
 This surprising result indicates that the model does a good job fitting to the pretraining and then struggles to transfer to the new data.
 The good news, though, is that regular Chemprop does a good job here, so no need to try the foundation model in the first place.
 
-# Multiclass
+## Multiclass
 
 Reproduce: `. run.sh`
 

@@ -3,3 +3,4 @@ chemeleon_hepatotoxicity.pdf
 seal_et_al_comparison/outputs
 seal_et_al_comparison/lightning_logs
 .vscode
+*.pdf

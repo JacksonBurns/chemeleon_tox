@@ -10,6 +10,7 @@ from sklearn.metrics import (
 )
 import numpy as np
 import os
+from pathlib import Path
 
 def calculate_binary_metrics(y_true, y_prob, threshold=0.5):
     """
@@ -94,6 +95,17 @@ def main():
         # Calculate metrics
         metrics = calculate_binary_metrics(y_true, y_prob)
         results_by_strategy[strategy_name] = metrics
+    
+    # also run the dilipred model results, if present
+    dilipred_pred = Path("dilipred_testing_predictions.csv")
+    if dilipred_pred.exists():
+        df_predictions = pd.read_csv(dilipred_pred)
+        df_merged = pd.merge(df_predictions, df_truth, on='smiles', suffixes=('_pred', '_true'))
+        y_true = df_merged['is_toxic_true']
+        y_prob = df_merged['is_toxic_pred']
+        # threshold from https://github.com/Manas02/dili-pip/blob/c6aa80c0b9603cde130a48cae40d34f4fd66a1b1/dilipred/main.py#L363
+        metrics = calculate_binary_metrics(y_true, y_prob, threshold=0.612911)
+        results_by_strategy["dilipred_2025"] = metrics
 
     return results_by_strategy
 

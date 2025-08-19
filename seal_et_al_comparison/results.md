@@ -16,7 +16,7 @@ All datasets were retrieved from the reference study - see `data.ipynb` for furt
 CheMeleon outperforms all other models on all but one of the tested metrics, and then only narrowly.
 The most effective strategy is the two stage "Low + High Transfer Learning" in which CheMeleon is first pretrained on a large dataset of toxicity results scraped from the literature.
 The resulting model is then re-used on a smaller, carefully curated dataset to improve its performance.
-Perhaps the most telling metric is the AUC-ROC of CheMeleon's best model, 0.86, a substantial improvement over the next best model (DILIPredictor's 0.61) and a good indicator of overall classifier performance.
+Perhaps the most telling metric is the Sensitivity of CheMeleon's best model, 0.86, a substantial improvement over the next best model (DILIPredictor's 0.61) and a good indicator of overall classifier performance.
 
 Acronym Key:
  - BA: Balanced Accuracy

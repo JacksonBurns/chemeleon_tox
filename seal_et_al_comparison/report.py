@@ -7,6 +7,7 @@ from sklearn.metrics import (
     precision_score,
     recall_score,
     average_precision_score,
+    roc_curve,
 )
 import numpy as np
 import os
@@ -95,6 +96,10 @@ def main():
         # Calculate metrics
         metrics = calculate_binary_metrics(y_true, y_prob)
         results_by_strategy[strategy_name] = metrics
+        fpr, tpr, thresholds = roc_curve(y_true, y_prob)
+        j_scores = tpr - fpr
+        best_threshold = thresholds[np.argmax(j_scores)]
+        print(f"Post-hoc {strategy_name} best threshold (Youden J): {best_threshold:.2f}")
     
     # also run the dilipred model results, if present
     dilipred_pred = Path("dilipred_testing_predictions.csv")

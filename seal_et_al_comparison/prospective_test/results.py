@@ -8,6 +8,7 @@ from sklearn.metrics import (
     recall_score,
     average_precision_score,
 )
+from presentable import confusion_matrix
 import numpy as np
 import os
 from pathlib import Path
@@ -83,16 +84,22 @@ def main():
     df_merged = pd.merge(df_predictions, df_truth, on='smiles', suffixes=('_pred', '_true'))
     y_true = df_merged['is_toxic_true']
     y_prob = df_merged['is_toxic_pred']
-    metrics = calculate_binary_metrics(y_true, y_prob, threshold=0.55)
+    chemeleon_threshold = 0.5
+    metrics = calculate_binary_metrics(y_true, y_prob, threshold=chemeleon_threshold)
     results["chemeleon"] = metrics
+    print("CheMeleon Confusion Matrix:")
+    confusion_matrix(y_true, (y_prob > chemeleon_threshold).astype(int))
 
     df_predictions = pd.read_csv("dilipred_predictions.csv")
     df_predictions = df_predictions.rename(columns={"pred": "is_toxic"})
     df_merged = pd.merge(df_predictions, df_truth, on='smiles', suffixes=('_pred', '_true'))
     y_true = df_merged['is_toxic_true']
     y_prob = df_merged['is_toxic_pred']
-    metrics = calculate_binary_metrics(y_true, y_prob, threshold=0.612911)
+    dilipred_threshold = 0.612911
+    metrics = calculate_binary_metrics(y_true, y_prob, threshold=dilipred_threshold)
     results["dilipred"] = metrics
+    print("dilipred Confusion Matrix:")
+    confusion_matrix(y_true, (y_prob > dilipred_threshold).astype(int))
 
     df = pd.DataFrame(results).T
     print(df.to_markdown())
